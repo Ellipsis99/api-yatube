@@ -1,15 +1,15 @@
 from rest_framework import viewsets
-from rest_framework import generics
+
 import datetime as dt
 
-from posts.models import Post, User
+from posts.models import Post, User, Group
 
-from .serializers import PostSerializer, UserSerializer
+from .serializers import PostSerializer, GroupSerializer
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class UserViewSet(viewsets.ReadOnlyModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -20,4 +20,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-#ListApiView для Group -> GroupList
+class GroupViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
