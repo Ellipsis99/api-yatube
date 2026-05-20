@@ -1,21 +1,13 @@
 from rest_framework import serializers
 
-import datetime as dt
-
-from posts.models import Post, Comment, Group, User
+from posts.models import Comment, Group, Post
 
 
-
-# class UserSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = User
-#         fields = ('username',)
-
-
-class PostSerializer(serializers.ModelSerializer):
+class BaseSerializerWithAuthor(serializers.ModelSerializer):
     author = serializers.StringRelatedField(read_only=True)
-    # group = serializers.SlugRelatedField(queryset=Group.objects.all(), slug_field='slug')
+
+
+class PostSerializer(BaseSerializerWithAuthor):
 
     class Meta:
         model = Post
@@ -27,3 +19,11 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('id', 'title', 'slug', 'description')
+
+
+class CommentSerializer(BaseSerializerWithAuthor):
+    post = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'author', 'post', 'text', 'created')
